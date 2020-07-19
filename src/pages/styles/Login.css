@@ -1,0 +1,17 @@
+.layout{
+    width:100%;
+    height:auto;
+    min-height:100vh;
+    display:flex;
+    justify-content: center;
+    align-content:center;
+    align-items: center;
+}
+
+.floating-div{
+    width:40%;
+    margin:0 auto;
+    padding:4%;
+    border:1px solid #000;
+    text-align: center;
+}

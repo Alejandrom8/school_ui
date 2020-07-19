@@ -1,0 +1,16 @@
+/* .bordered{
+    /* border:1px solid #ddd; 
+} */
+
+/* .subSection{
+    /* max-height: 30vh; 
+    /* overflow-x: scroll; 
+} */
+
+.card .card-content{
+    padding:10px;
+}
+
+.row{
+    margin-bottom:0;
+}
