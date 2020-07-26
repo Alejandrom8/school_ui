@@ -18,36 +18,72 @@ a{
 .side-section{
 	margin: 0 4%;
 	padding:4% 2%;
-	background-color:#eee;
 }
 
 .subject{
 	height: auto;
+	font-weight: bold;
 }
 
 .subject-li{
 	width:100%;
-	padding:6% 3%;
-	font-size:12px;
 }
 
-.subject-li:hover{
+.subject-container{
+	padding:3% 8%;
+	font-size: 12px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	box-shadow: 1px 0px 4px #bbb;
+	margin: 4%;
+	cursor: pointer;
+	min-height: 60px;
+	display:flex;
+	align-items: center;
+}
+
+.subject-container:hover{
 	background-color:#eee;
 }
 
 .main-content{
-	padding:4%;
+	padding:4% 0;
 }
 
 .ss-h{
 	width:100%;
 	height:auto;
-	padding:2% 4%;
+	padding:0 4% 5%;
 	color:#444;
 	font-weight: lighter;
 }
 
 .ss-h h5{
+	margin:0;
 	font-weight: 700;
 	font-style: normal;
 }
+
+/*Colors*/
+/*.red-card{ background-color: #f94144; }
+.orange-card{ background-color: #f3722c; }
+.yellow-card{ background-color: #f8961e; }
+.mango-card{ background-color: #f9844a; }
+.maize-card{ background-color: #f9c74f; }
+.pistachio-card{ background-color: #90be6d; }
+.zomp-card{ background-color: #43aa8b; }
+.cadet-card{ background-color: #4d908e; }
+.queen-card{ background-color: #577590; }
+.blue-card{ background-color: #277da1; }*/
+
+.red-card{ border-bottom: 3px solid #f94144; }
+.orange-card{ border-bottom: 3px solid #f3722c; }
+.yellow-card{ border-bottom: 3px solid #f8961e; }
+.mango-card{ border-bottom: 3px solid #f9844a; }
+.maize-card{ border-bottom: 3px solid #f9c74f; }
+.pistachio-card{ border-bottom: 3px solid #90be6d; }
+.zomp-card{ border-bottom: 3px solid #43aa8b; }
+.cadet-card{ border-bottom: 3px solid #4d908e; }
+.queen-card{ border-bottom: 3px solid #577590; }
+.blue-card{ border-bottom: 3px solid #277da1; }
+

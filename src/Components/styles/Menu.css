@@ -1,0 +1,25 @@
+#menu{
+    display:flex;
+    flex-flow: column wrap;
+    padding: 0 5%;
+}
+
+#menu > .rightSection{
+    display:flex;
+    height:100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#menu > .rightSection > button{
+    background-color: gray;
+}
+
+#menu > .rightSection button:hover{
+    background-color: tomato;
+}
+
+#menu > .rightSection ul li{
+    float: left;
+    text-decoration: none;
+}

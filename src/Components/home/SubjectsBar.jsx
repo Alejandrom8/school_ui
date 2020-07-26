@@ -8,22 +8,12 @@ function getRandom(limit){
 }
 
 function randomColor(){
-	let colors = [
-		{color: '#000000', font: '#fff'},
-		{color: '#FF0400', font: '#444'},
-		{color: '#FF7300', font: '#fff'},
-		{color: '#FFEA00', font: '#444'},
-		{color: '#5EFF00', font: '#444'},
-		{color: '#00FFCC', font: '#444'},
-		{color: '#0019FF', font: '#fff'},
-		{color: '#BF00FF', font: '#444'},
-		{color: '#FF00BF', font: '#444'},
-	];
+	let colors = ['red', 'orange', 'yellow', 'mango', 'maize', 'pistachio', 'zomp', 'cadet', 'queen', 'blue'];
 	let index, isTaken;
 
 	do{
 		index = getRandom(colors.length);
-		isTaken = takenColors.some( i => i === index);
+		isTaken = takenColors.some(taken => taken === index);
 	}while(isTaken);
 
 	takenColors.push(index);
@@ -33,20 +23,25 @@ function randomColor(){
 
 function Subject(props){
 	return(
-		<Link to={`/subject/${props.id}`} className="subject">
-			<span>{props.name}</span>
-		</Link>
+		<div className={`subject-container ${props.color}-card`}>
+			<div className="subject">
+				<span>{props.name}</span>
+			</div>
+		</div>
 	);
 }
 
 class SubjectsBar extends Component {
 	subjectsAsSubject(){
 		let subjects = this.props.subjects;
+
 		return subjects.map( sub => {
-			let {color, font} = randomColor();
+			let color = randomColor();
 			return (
-				<li key={sub.clave} className="subject-li" style={{borderBottom:`1px solid ${color}`, color:font}}>
-					<Subject name={sub.nombre} id={sub.clave}/>
+				<li key={sub.clave}>
+					<Link to={`/semester/${this.props.semester}/subject/${sub.clave}`}>
+						<Subject name={sub.nombre} color={color}/>
+					</Link>
 				</li>
 			);
 		});

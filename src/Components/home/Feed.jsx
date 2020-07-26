@@ -22,27 +22,33 @@ class Feed extends React.Component{
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.setState({
             loading: false,
             feed: [
-                {owner: 'Alenajdro Gomez Garcia', message:'La tarea se entrega en que fecha?'},
-                {owner: 'Lizbeth Torres Bargas', message: 'A que hora me vas a besar Alejandro?'},
-                {owner: 'Lazka Gómez García', message: 'wooof wof wooof woof wof'},
+                {id: 1, owner: 'Alenajdro Gomez Garcia', message:'La tarea se entrega en que fecha?'},
+                {id: 2, owner: 'Lizbeth Torres Bargas', message: 'HOlaaaaaaaaaaa'},
+                {id: 3, owner: 'Lazka Gómez García', message: 'wooof wof wooof woof wof'},
             ]
         })
     }
 
     getFeed(){
         return this.state.feed.map(card => {
-            return <Card owner={card.owner} message={card.message} />;
+            return (
+                <li key={card.id}>
+                    <Card owner={card.owner} message={card.message} />
+                </li>
+            );
         });
     }
 
     render(){
         return(
             <section className="Feed">
+                <ul>
                 {this.getFeed()}
+                </ul>
             </section>
         )
     }

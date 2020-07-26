@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeLayout from '../Components/layauts/HomeLayout';
+import { Semester } from '../api/Api';
 
 class Subject extends React.Component{
 
@@ -8,17 +9,35 @@ class Subject extends React.Component{
         this.state = {
             loading: true,
             error: null,
-            subjectID: null
+            info: undefined
         };
+        this.getSubjectInfo = this.getSubjectInfo.bind(this);
     }
 
     componentDidMount() {
-        let {subjectID} = this.props.match.params;
-        if(!subjectID){
+        let {semesterID, subjectID} = this.props.match.params;
+        console.log(semesterID, subjectID);
+        if(!semesterID || !subjectID){
             this.setState({loading: false, error: 'No subject'});
             return
         }
-        this.setState({loading: false, subjectID: subjectID});
+        this.getSubjectInfo(semesterID, subjectID);
+    }
+
+    async getSubjectInfo(semester, subject){
+        this.setState({loading: true, error: null});
+
+        let result =  await Semester.getSubject(semester, subject);
+
+        if(!result){
+            this.setState({loading: false, error: 'No se pudo contactar con el servidor'});
+            return
+        }else if(!result.success){
+            this.setState({loading: false, error: result.errors});
+            return
+        }
+
+        this.setState({loading: false, info: result.data});
     }
 
     render(){
@@ -27,7 +46,7 @@ class Subject extends React.Component{
 
         return (
             <HomeLayout>
-                <p>Subject: {this.props.match.params.subjectID}</p>
+                <p>Subject: {this.state.info.nombre}</p>
             </HomeLayout>
         )
     }
