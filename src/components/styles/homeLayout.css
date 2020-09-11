@@ -1,0 +1,24 @@
+#homeLayout{
+    widows: 100%;
+    display: grid;
+    grid-template: 0.1fr 0.9fr / 100%;
+    overflow:hidden;
+}
+
+/* #homeLayout .Page__container{
+    padding-top: 60px;
+} */
+
+/* 
+#homeLayout .Page__container{
+    overflow-y: scroll;
+}
+
+#homeLayout .Page__container::-webkit-scrollbar {
+	width: 0.7rem;
+}
+
+#homeLayout .Page__container::-webkit-scrollbar-thumb {
+	background-color: #222;
+	border-radius: 20px;
+} */

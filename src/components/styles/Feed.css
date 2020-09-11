@@ -1,0 +1,29 @@
+#Feed__list{
+    border:0;
+}
+
+#Feed__list li.collection-item{
+    background-color:transparent;
+    border:0;
+    padding:0 3%;
+}
+
+
+.Feed__Card.container{
+    width: 100%;
+    margin-bottom:3%;
+    padding:1% 4%;
+    border-radius:10px;
+    color: #333;
+    /* background-color: #ddd; */
+    /* border: 1px solid #666; */
+    border: 1px solid rgba(var(--b6a,219,219,219),1);
+}
+
+.Feed__Card .row{
+    margin:3% 0;
+}
+
+.Feed__Card span{
+    color:#666;
+}

@@ -1,66 +1,87 @@
+//Dependencies
 import React, {Component} from 'react';
-import config from '../config';
-import HomeLayout from '../Components/layauts/HomeLayout';
-import SubjectsBar from '../Components/home/SubjectsBar';
-import Feed from '../Components/home/Feed';
-import { User } from '../api/Api';
+import { connect } from 'react-redux';
 
-import 'materialize-css/dist/css/materialize.css';
+//State management components
+import * as homeActions from '../state/actions/homeActions';
+import {isEmpty} from '../util/validators';
+
+//Home components
+import HomeLayout from '../components/layauts/HomeLayout';
+import ProfileCard from '../components/home/ProfileCard';
+import TodoBar from '../components/home/TodoBar';
+import Feed from '../components/home/Feed';
+import SubjectsBar from '../components/home/SubjectsBar';
+
+//helper components
+import Loading from '../components/Loading';
+import Error from '../components/Error';
+
+//Styles
 import './styles/Home.css';
 
-class Home extends Component{
 
-    constructor(props){
+class Home extends Component {
+
+    constructor(props) {
         super(props);
-        this.token = localStorage.getItem('token');
-        this.state = {
-            loading: true,
-            user: {}
+        this.state = {loading: true};
+    }
+
+    async componentDidMount() {
+        if(isEmpty(this.props.user)) await this.props.getUserInfo();
+
+        if(!this.props.error) {
+            if(this.props.redirect) {
+                this.props.history.push('/login');
+                return
+            }
+
+            if(isEmpty(this.props.semesters)) await this.props.getSemesters();
+
+            if(!this.props.error) {
+                if(isEmpty(this.props.subjects)) {
+                    await this.props.getSemesterElements();
+                }
+            }
         }
-        this.getUserData = this.getUserData.bind(this);
+
+        this.setState({loading: false});
     }
 
-    componentDidMount(){
-        this.getUserData();
-    }
-
-    async getUserData(){
-        let result = await User.getInfo(this.token);
-        if(!result) {
-            console.log('La respuesta del servidor esta vacia');
-            return
-        }else if(!result.success) {
-            this.props.history.push('/login');
-            return
-        }
-        this.setState({
-            user: result.data,
-            loading: false
-        });
-    }
-
-    render(){
-        if(this.state.loading) return <p>Cargando...</p>;
+    render() {
+        if(this.state.loading) return <Loading />;
+        if(this.props.error) return <Error error={this.props.error} />;
 
         return (
-            <HomeLayout username={this.state.user.name}>
-                <div className="row main-content">
-                    <aside className="col s3">
-                        <SubjectsBar 
-                            semester={this.state.user.semester} 
-                            subjects={this.state.user.subjects} 
-                        />
-                    </aside>
-                    <section className="col s6">
-                        <Feed token={this.token} />
-                    </section>
-                    <aside className="col s3">
-                        adios
-                    </aside>
+            <HomeLayout>
+                <div className="main-content">
+                    <div className="row">
+                        <aside className="col s3">
+                            <ProfileCard
+                                user={this.props.user}
+                                semester={this.props.selectedSemester}
+                                subjects={this.props.subjects}
+                            />
+                        </aside>
+                        <section className="col s6 ScrollerSection">
+                            <TodoBar
+                                todo={[0,1,2]}
+                            />
+                            <Feed />
+                        </section>
+                        <aside className="col s3">
+                            <SubjectsBar
+                                subjects={this.props.subjects}
+                            />
+                        </aside>
+                    </div>
                 </div>
             </HomeLayout>
         )
     }
 }
 
-export default Home;
+const mapStateToProps = (reducers) => reducers.homeReducer;
+
+export default connect(mapStateToProps, homeActions)(Home);

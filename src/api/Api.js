@@ -1,60 +1,108 @@
-import config from './config';
+import config from './api.config';
 
-async function performRequest(dir, data = null){
+export async function callApi(endpoint, method='GET', data = null) {
+    let token = localStorage.getItem('token') || null;
+    if(!token) return 'User is not authenticated';
+
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json')
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', `Bearer ${token}`);
 
     const credentials = {
-        method: 'GET',
+        method: method,
         headers: headers,
         mode: 'cors',
         cache: 'default'
     };
 
-    if(data){
-        credentials.method = "POST";
+    if(data && method !== 'GET') {
         credentials.body = JSON.stringify(data);
     }
 
-    try{
-        const request = await fetch(dir, credentials);
+    try {
+        const request = await fetch(config.url + endpoint, credentials);
         if(!request.ok) throw new Error("No se logro contactar con el servidor");
         return await request.json();
-    }catch(e){
-        console.log(e);
+    } catch(error) {
+        console.log(error);
     }
 }
 
-//Semester
-export class Semester{
-    static async getSemester(semesterID){
-        let url = `${config.url}/semester/${semesterID}`;
-        return await performRequest(url);
+//Auth
+export class Auth {
+    static async signUp(data) {
+        return await callApi('/signup', 'POST', data);
     }
 
-    static async getSubject(semester, subject){
-        let url = `${config.url}/semester?semesterID=${semester}&subjectID=${subject}`;
-        return await performRequest(url);
+    static async signIn(email, password) {
+        return await callApi(
+            '/signin',
+            'POST',
+            { email, password }
+        )
     }
 }
 
 //User
 export class User {
-    static async logIn(email, password) {
-        let url = `${config.url}/sign_in`;
-        let data = {email: email, password: password};
-        return await performRequest(url, data);
+    static async getUser() {
+        return await callApi(`/user`);
     }
 
-    static async signUp(data){
-        let url = `${config.url}/user/create`;
-        return await performRequest(url, data);
-    }
-
-    static async getInfo(token){
-        const url = `${config.url}/user?token=${token}`;
-        return await performRequest(url);
+    static async getUserSemesters() {
+        return await callApi(`/semester/userID`);
     }
 }
 
-export default performRequest;
+//Semester
+export class Semester {
+    static async createSemester(semester) {
+        return await callApi(`/semester`, 'POST', semester);
+    }
+
+    static async getCompleteSemesterSubjects(semesterID) {
+        let url = `/semester/${semesterID}/subjects/complete`;
+        return await callApi(url);
+    }
+
+    static async getSemesterCalifications(semesterID) {
+        let url = `/semester/${semesterID}/califications`;
+        return await callApi(url);
+    }
+}
+
+//subject
+export class Subject {
+    static async getSubjectsForSemester(semesterID) {
+        let url = `/subject/semesterID/${semesterID}`;
+        return await callApi(url);
+    }
+
+    static async getSubjectModules(subjectID) {
+        let url = `/subject/${subjectID}/modules`;
+        return await callApi(url);
+    }
+}
+
+//ScheduledSubject
+export class ScheduledSubject {
+    static async updateSubjectCalif(scheduledSubjectID, calif) {
+        let url = `/scheduledSubject/${scheduledSubjectID}/subjectCalif`;
+        return await callApi(url, 'PUT', {calif});
+    }
+
+    static async updateActivityCalif(scheduledSubjectID, activityID, calif) {
+        let url = `/scheduledSubject/${scheduledSubjectID}/activityCalif`;
+        return await callApi(url, 'PUT', {
+            activityID: activityID,
+            calif: calif
+        });
+    }
+
+    static async updatePonderations(scheduledSubjectID, ponderation) {
+        let url = `/scheduledSubject/${scheduledSubjectID}/ponderation`;
+        return await callApi(url, 'PUT', {
+            ponderation: ponderation
+        });
+    }
+}

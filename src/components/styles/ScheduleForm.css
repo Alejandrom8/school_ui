@@ -1,0 +1,12 @@
+
+.SubjectOption {
+    width:100%;
+    padding:3%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color:#555;
+    height:70px;
+    overflow: hidden;
+}

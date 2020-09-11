@@ -1,0 +1,57 @@
+#ToolsList__container{
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.ToolsList{
+    width:300px;
+    background-color:#fff;
+    border-radius:15px;
+    box-shadow: 1px 1px 1px #ddd;
+}
+
+.ToolsList h5{
+    color:#333;
+    font-weight: bold;
+}
+
+.closer{
+    width:100%;
+    padding:4%;
+}
+
+button.ToolsList__button{
+    width:auto;
+    height:auto;
+    border:0;
+    cursor: pointer;
+    background-color:transparent;
+}
+
+button.ToolsList__button:active{
+    background-color: transparent;
+}
+
+.ToolsList__list{
+    max-height:40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ToolsList__icon{
+    width:70px;
+    height:70px;
+}
+
+.ToolsList__input{
+    display:flex;
+    justify-content: space-between;
+}
+
+.ToolsList__input *{
+    float:left;
+}

@@ -1,0 +1,31 @@
+.SemesterContainer {
+    width:100%;
+    height:auto;
+    background-color:#eee;
+    border-radius:10px;
+    padding:5%;
+}
+
+.SemesterContainer h3 {
+    margin: 3% 0;
+}
+
+.margin {
+    margin:5% 0;
+    padding:1%;
+}
+
+.buttonContainer {
+    /* width:100%; */
+    display:flex;
+    justify-content: flex-end;
+}
+
+#subjectsForm table {
+    font-size: 14px;
+}
+
+.buttonContainer .btn{
+    width:30%;
+    margin:0;
+}

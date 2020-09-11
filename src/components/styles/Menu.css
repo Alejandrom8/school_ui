@@ -1,0 +1,132 @@
+#menu {
+    width:100%;
+    height: auto;
+    z-index: 10;
+    background-color:#fff;
+    /* box-shadow: 1px 1px 3px #aaa; */
+    border-bottom: 1px solid rgba(var(--b6a,219,219,219),1);
+}
+
+#menu .menu__container {
+    width:100%;
+    height: 60px;
+    padding:0 5%;
+    overflow: hidden;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    display:flex;
+}
+
+#menu .menu__container .logo{
+    display:flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+}
+
+#menu .menu__container .logo h4{
+    margin:0;
+    padding:0;
+}
+
+#menu .menu__options{
+    -webkit-box-align: center;
+    align-items: center;
+    display:flex;
+    -webkit-box-flex: 1;
+    position: relative;
+    height:100%;
+}
+
+#menu .menu__options-container {
+    margin-left: 60px;
+    height: 60px;
+    display:flex;
+    align-items: center;
+}
+
+#menu .menu__options-container span {
+    height:100%;
+}
+
+#menu .menu__options-container span:hover{
+    background:#eee;
+}
+
+#menu .menu__options-container span a{
+    height:100%;
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding:0 10px;
+    color:#333;
+    font-weight:bold;
+}
+
+#menu .menu__searcher {
+    -webkit-box-align: center;
+    align-items: center;
+    display:flex;
+    -webkit-box-flex: 1;
+    position: relative;
+    height:100%;
+}
+
+#menu .menu__searcher-container {
+    margin:0  50px;
+    display:flex;
+    position: relative;
+    align-items: center;
+    height:100%;
+}
+
+#menu input.searcher {
+    width:400px;
+    border:0;
+    background:rgba(238, 238, 238, 0.7);
+    border-radius:10px;
+    padding:0 5%;
+    margin:0;
+}
+
+#menu .menu__semester {
+    -webkit-box-align: center;
+    align-items: center;
+    display:flex;
+    -webkit-box-flex: 1;
+    position: relative;
+    height:100%;
+}
+
+#menu .menu__semester-container {
+    margin-left: 30px;
+}
+
+#menu .menu__semester-select {
+    width: 100px;
+    height:60%;
+}
+
+#menu .menu__profile{
+    -webkit-box-align: center;
+    align-items: center;
+    display:flex;
+    -webkit-box-flex: 1;
+    position: relative;
+    height:100%;
+}
+
+#menu .menu__profile-container{
+    margin-left: 40px;
+}
+
+.circled{
+    width:40px;
+    border-radius:50%;
+}
+
+
+

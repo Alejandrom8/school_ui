@@ -1,47 +1,76 @@
 import React, { Component } from 'react';
 
-import DefaultLayout from '../Components/layauts/DefaultLayout';
-import { Redirect } from 'react-router-dom';
+import { Auth } from '../api/Api';
 
-import LoginForm from '../Components/LoginForm';
+import LoginForm from '../components/LoginForm';
+import Loading from '../components/Loading';
 
 import './styles/Login.css';
+
 
 class Login extends Component{
     constructor(props){
         super(props);
         
         this.state = {
-            email: '',
-            password: '',
             loading: false,
-            redirect: false
+            error: null,
+            form: {}
         };
-        this.redirect = this.redirect.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.manageResponse = this.manageResponse.bind(this);
     }
 
-    redirect(){
+    handleChange(event){
+        const nextForm = this.state.form;
+        nextForm[event.target.name] = event.target.value;
         this.setState({
-            redirect: true
+            form: nextForm
         })
     }
 
+    async handleSubmit(event){
+        event.preventDefault();
+        this.setState({loading: true});
+        let {email, password} = this.state.form;
+        let result = await Auth.signIn(email, password);
+        this.manageResponse(result);
+    }
+
+    manageResponse(res){
+        if(!res) {
+            alert('There was a problem while sign in the app');
+        } else if(!res.success) {
+            console.log(res.errors);
+            this.setState({
+                error: res.messages || res.errors,
+                loading: false
+            });
+        } else {
+            localStorage.setItem('token', res.data.token);
+            this.props.history.push('/home');
+        }
+    }
+
     render(){
-        if(this.state.loading) return <p>Loading...</p>;
-        if (this.state.redirect) return <Redirect to="home"/>;
+        if(this.state.loading) return <Loading />;
 
         return (
-            <DefaultLayout title="login">
-                <div className="layout">
-                    <div className="floating-div">
-                        <div className="margin">
-                            <h4> Log in</h4>
-                            <br/>
-                            <LoginForm redirect={this.redirect}/>
-                        </div>
+            <div className="layout">
+                <div className="floating-div">
+                    <div className="FormContainer">
+                        <h4>Sign in</h4>
+                        <br/>
+                        <p>{this.state.error}</p>
+                        <LoginForm 
+                            onChange={this.handleChange}
+                            onSubmit={this.handleSubmit}
+                        />
                     </div>
                 </div>
-            </DefaultLayout>
+            </div>
         )
     }
 }

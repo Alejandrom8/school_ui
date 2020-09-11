@@ -1,0 +1,30 @@
+#LoginForm{
+    width:100%;
+}
+
+#LoginForm .MuiInput-underline {
+    border:0;
+    content: none;
+    transition: none;
+}
+
+#LoginForm .MuiInput-underline:before {
+    border:0;
+    content: none;
+    transition: none;
+}
+
+#LoginForm .MuiInput-underline:after {
+    border:0;
+    content: none;
+    transition: none;
+}
+
+#LoginForm .form-input{
+    margin:3% 0;
+}
+
+#LoginForm .btn{
+    margin: 5% 0;
+    width: 70%;
+}

@@ -1,0 +1,32 @@
+.daySection {
+    height:60px;
+    overflow: hidden;
+    padding: 1% 4%;
+    border-top:1px solid #999;
+    cursor: pointer;
+    font-size:11px;
+}
+
+.Day {
+    border:1px solid #999;
+    border-collapse: collapse;
+    height:auto;
+}
+
+.Day__title {
+    height:60px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.Day__body {
+    height:100%;
+}
+
+.ScheduleContainer {
+    width:100%;
+    height:600px;
+    overflow: scroll;
+}

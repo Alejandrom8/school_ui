@@ -1,0 +1,26 @@
+.EditableInput div {
+    display:inline;
+}
+
+.EditableInput input {
+    border: 0;
+    text-align: center;
+    border: 1px solid rgba(var(--b6a,219,219,219),1);
+    padding: 1% 0;
+    border-radius: 3px;
+}
+
+.EditableInput__options {
+    width: 60px;
+    overflow: auto;
+}
+
+.EditableInput__options button{
+    background: transparent;
+    border:0;
+    cursor: pointer;
+}
+
+.EditableInput__options img{
+    width: 20px;
+}

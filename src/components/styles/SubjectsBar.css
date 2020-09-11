@@ -1,0 +1,27 @@
+.subject{
+	height: auto;
+	font-weight: bold;
+}
+
+.subject-container{
+	padding:3% 8%;
+	font-size: 13px;
+	border-radius: 8px;
+	margin: 6% 0;
+	cursor: pointer;
+	min-height: 50px;
+	display:flex;
+	align-items: center;
+	color:#fff;
+	font-weight: bold;
+}
+
+.subject-container:hover{
+	background-color:#444;
+	color:#eee;
+}
+
+.SubjectsBar {
+	height: 100%;
+	overflow: hidden;
+}
