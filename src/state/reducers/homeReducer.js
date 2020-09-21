@@ -1,44 +1,47 @@
-import { 
+import {
+    GET_HOME,
     GET_INFO,
     REDIRECT,
     ERROR, 
-    GET_SEMESTERS, 
-    CHANGE_SEMESTER,
-    GET_SEMESTER_ELEMENTS 
+    CHANGE_SEMESTER
 } from '../types/homeTypes';
 
+import {
+    getSemester
+} from '../modifiers/homeModifiers';
+
 const INITIAL_STATE = {
-    user: {},
-    semesters: [],
-    subjects: [],
+    user: null,
+    configuration: {},
     selectedSemester: null,
-    califications: [],
+    semesters: [],
     redirect: false,
     error: null
 };
 
 const homeReducer = (state = INITIAL_STATE, action) => {
-    switch (action.type) {
+    switch(action.type) {
+        case GET_HOME:
+            return {
+                ...state,
+                ...action.payload,
+                selectedSemester: getSemester(
+                    action.payload.semesters,
+                    action.payload.configuration.selectedSemester
+                )
+            }
         case GET_INFO:
             return {
                 ...state, 
                 user: action.payload
             };
-        case GET_SEMESTERS:
-            return {
-                ...state, 
-                semesters: action.payload.semesters,
-                selectedSemester: action.payload.semesters[0]
-            };
-        case GET_SEMESTER_ELEMENTS: 
-            return {
-                ...state, 
-                ...action.payload /** subjects */
-            };
         case CHANGE_SEMESTER:
             return {
                 ...state,
-                selectedSemester: action.payload
+                selectedSemester: getSemester(
+                    state.semesters, 
+                    action.payload.selectedSemester
+                )
             };
         case REDIRECT:
             return {

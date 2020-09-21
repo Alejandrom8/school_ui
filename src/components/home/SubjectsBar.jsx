@@ -19,9 +19,9 @@ class SubjectsBar extends Component {
 	subjectsAsSubject() {
 		let subjects = this.props.subjects;
 
-		return subjects.map( sub => (
-			<li key={sub.subjectID}>
-				<Link to={`/subject/${sub.subjectID}`}>
+		return subjects.map( ({data: sub}) => (
+			<li key={sub.scheduledSubjectID}>
+				<Link to={`/subject/${sub.scheduledSubjectID}`}>
 					<Subject name={sub.name} color={sub.color}/>
 				</Link>
 			</li>

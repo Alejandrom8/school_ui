@@ -15,7 +15,7 @@
 #title{
     /* flex-flow: column wrap; */
     /*height:30vh;*/
-    padding:5% 0;
+    padding:2% 0;
     /* background-color: #277da1; */
     margin:0;
     color:#333;
@@ -30,10 +30,12 @@
 .withOutMargin {
     margin:0;
     line-height: 52px;
-    animation: 1s desgloceFont;
+    /* animation: 1s desgloceFont; */
+    font-size: 2em;
+    max-width: 70%;
 }
 
-@keyframes desgloceFont{
+@keyframes desgloceFont {
     0%{
         line-height: 0px;
     }
@@ -43,21 +45,28 @@
 }
 
 .Materials{
-    text-align: center;
+    margin-top: 5%;
+    width: 100%;
+}
+
+.Materials h5 {
+    padding: 0;
 }
 
 .Materials .link{
-    border-radius: 10px;
-    padding:5px;
-}
-
-.Materials .link:hover{
-    background-color:#ddd;
+    padding: 3%;
 }
 
 .Materials .link a{
-    font-size:16px;
+    font-size:18px;
     line-height: 20px;
+    color: #fff;
+    width:  200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
 .to-end{
@@ -69,20 +78,20 @@
 
 .Details{
     width: 100%;
-    height: 50px;
+    height: 40px;
     padding: 2% 0;
 }
 
 .Details .Detail__item {
     border-radius:20px;
-    background:#eee;
+    /* background:#eee; */
     text-align:center;
     font-weight: bold;
     font-family: 'Lato';
     float: left;
     width: fit-content;
     margin-right: 2%;
-    padding:1% 4%;
+    padding:0.5% 2%;
 }
 
 input[type="text"].calification {
@@ -97,8 +106,6 @@ input[type="text"].calification {
 .subjectView {
     width:100%;
     height: 90vh;
-    overflow-y: scroll;
-    padding: 4% 15%;
 }
 
 .materialsContainer {
@@ -114,5 +121,16 @@ input[type="text"].calification {
 }
 
 .subject-panel {
-    padding: 4% 0;
+    padding: 2% 0;
+}
+
+.subjectTabs {
+    display: grid;
+    grid-template: 90vh / 1fr 7fr;
+}
+
+.subjectTabs__options {
+    padding: 5%;
+    height: 90vh;
+    overflow-y: scroll;
 }

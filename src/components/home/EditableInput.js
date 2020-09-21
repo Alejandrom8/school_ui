@@ -42,10 +42,10 @@ export default function EditableInput(props) {
         return (
             <div className="buttonGroup">
                 <button className="okButton" onClick={ok}>
-                    <img src={OkImage} alt='ok image'/>
+                    <img src={OkImage} alt='ok'/>
                 </button>
                 <button className="cancelButton" onClick={cancel}>
-                    <img src={CancelImage} alt='cancel image'/>
+                    <img src={CancelImage} alt='cancel'/>
                 </button>
             </div>
         )

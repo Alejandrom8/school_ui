@@ -56,10 +56,7 @@ class SignUp extends Component {
         try {
             const result = await Auth.signUp(data);
             if(!result) throw new Error('We cant contact to the server');
-            if(!result.success) throw new Error(result.errors);
-
-            localStorage.setItem('token', result.data.token);
-            
+            if(!result.success) throw new Error(result.errors);            
             this.setState({registered: true, loading: false});
         } catch(error) {
             this.setState({loading: false, error: error});

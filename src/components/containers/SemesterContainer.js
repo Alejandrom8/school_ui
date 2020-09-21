@@ -8,7 +8,7 @@ import '../styles/SemesterForm.css';
 class SemesterContainer extends React.Component {   
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
             form: {},
             loading: false,

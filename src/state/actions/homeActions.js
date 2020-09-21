@@ -1,92 +1,70 @@
 import * as API from '../../api/Api';
-import { 
+import {
+    GET_HOME,
     GET_INFO, 
     REDIRECT, 
     ERROR, 
-    CHANGE_SEMESTER,
-    GET_SEMESTERS, 
-    GET_SEMESTER_ELEMENTS 
+    CHANGE_SEMESTER
 } from '../types/homeTypes';
 
-//el que dispara la llamada y contacta al reducer para 
-//hacer el cambio de estado
-export const getUserInfo = () => async (dispatch) => {
+
+export const getHomeData = () => async (dispatch) => {
     try {
-        let result = await API.User.getUser();
-
-        if(!result) throw new Error('La respuesta del servidor esta vacia');
-        if(!result.success) {
-            dispatch({
-                type: REDIRECT,
-                payload: true
-            });
-            return;
-        }
-
+        let result = await API.User.getHomeData();
+        if(!result.success) throw result;
         dispatch({
-            type: GET_INFO,
+            type: GET_HOME,
             payload: result.data
         });
     } catch(error) {
+        if(error.redirect){
+            dispatch({
+                type: REDIRECT,
+                payload: true
+            })
+            return;
+        }
         dispatch({
             type: ERROR,
-            payload: error
-        });
-    }
-}
-
-export const getSemesters = () => async (dispatch) => {
-    try {
-        let result = await API.User.getUserSemesters();
-        if(!result) throw new Error('La respuesta del servidor esta vacia');
-        if(!result.success) throw result.errors;
-
-        dispatch({
-            type: GET_SEMESTERS,
-            payload: {
-                semesters: result.data
-            }
-        });
-    } catch(error) {
-        dispatch({
-            type: ERROR,
-            payload: error
-        });
-    }
-}
-
-export const getSemesterElements = () => async (dispatch, getState) => {
-    const {semesterID} = getState().homeReducer.selectedSemester;
-
-    try {
-        let results = {};
-
-        let subjectsResult = await API
-                                    .Semester
-                                    .getCompleteSemesterSubjects(semesterID);
-
-        if(!subjectsResult) throw new Error('La respuesta del servidor esta vacia');
-        results.subjects = subjectsResult;
-
-        dispatch({
-            type: GET_SEMESTER_ELEMENTS,
-            payload: results
-        });
-    } catch(error) {
-        dispatch({
-            type: ERROR,
-            payload: error
-        });
+            payload: error.errors
+        })
     }
 };
 
-export const changeSemester = (semesterID) => async (dispatch, getState) => {
-    const selectedSemester = getState().homeReducer.semesters.find(s => {
-        return s.semesterID === semesterID
-    });
-    dispatch({
-        type: CHANGE_SEMESTER,
-        payload: selectedSemester
-    })
-    getSemesterElements()(dispatch, getState);
-}
+//el que dispara la llamada y contacta al reducer para 
+//hacer el cambio de estado
+export const updateUser = () => async (dispatch) => {
+    await API.User.getUser()
+            .then(result => {
+                dispatch({
+                    type: GET_INFO,
+                    payload: result.data
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: ERROR,
+                    payload: error
+                })
+            });
+};
+
+export const changeSemester = (semesterID) => async (dispatch) => {
+    await API
+            .Configuration
+            .setSelectedSemester(semesterID)
+            .then(result => {
+                dispatch({
+                    type: CHANGE_SEMESTER,
+                    payload: {
+                        selectedSemester: semesterID,
+                    }
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: ERROR,
+                    payload: error
+                })
+            })
+};

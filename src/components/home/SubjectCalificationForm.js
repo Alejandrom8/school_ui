@@ -9,14 +9,12 @@ import '../styles/SubjectCalificationForm.css';
 
 function PonderationForm (props) {
     const [ponderation, setPonderation] = useState({});
-    const [error, setError] = useState(null);
     const handleChange = (event) => {
         ponderation[event.target.name] = event.target.value;
         setPonderation(ponderation);
     }
     const addPonderation = async () => {
-        let result = await props.onAdd(ponderation);
-        if(!result.success) setError(result.errors);
+        await props.onAdd(ponderation);
     }
 
     return (
@@ -29,7 +27,7 @@ function PonderationForm (props) {
                         </IconButton>
                     </div>
                     <div className="col s6">
-                        <FormControl fullwidth className="form-input">
+                        <FormControl className="form-input">
                             <Input
                                 type="text"
                                 name="name"
@@ -41,7 +39,7 @@ function PonderationForm (props) {
                         </FormControl>
                     </div>
                     <div className="col s2">
-                        <FormControl fullwidth className="form-input">
+                        <FormControl className="form-input">
                             <Input
                                 type="text"
                                 name="weight"
@@ -53,7 +51,7 @@ function PonderationForm (props) {
                         </FormControl>
                     </div>
                     <div className="col s3">
-                        <FormControl fullwidth className="form-input">
+                        <FormControl className="form-input">
                             <Input
                                 type="text"
                                 name="calif"
@@ -65,9 +63,6 @@ function PonderationForm (props) {
                     </div>
                 </div>
             </div>
-            <div className="col s12">
-                {error.message}
-            </div>
         </div>
     );
 }
@@ -75,7 +70,7 @@ function PonderationForm (props) {
 class SubjectCalificationForm extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
@@ -84,8 +79,8 @@ class SubjectCalificationForm extends React.Component {
     }
 
     renderPonderations() {
-        return this.props.califications.ponderations?.map(pnd => (
-            <tr>
+        return this.props.califications.ponderations?.map((pnd, i) => (
+            <tr key={i}>
                 <td>
                     <EditableInput
                         currentValue={pnd.name}

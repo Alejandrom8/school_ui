@@ -18,7 +18,7 @@ class SubjectOption{
 class SubjectsSelect extends Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.addSubject = this.addSubject.bind(this);
         this.deleteId = this.deleteId.bind(this);
         this.state = {

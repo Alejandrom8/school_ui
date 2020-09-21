@@ -7,7 +7,7 @@ import './styles/LoginForm.css';
 function LoginForm(props){
     return(
         <form id="LoginForm" onSubmit={props.onSubmit}>
-            <FormControl variant="outlined" fullwidth className="form-input">
+            <FormControl variant="outlined"  className="form-input">
                 <InputLabel htmlFor="email">Correo electrónico</InputLabel>
                 <OutlinedInput 
                     id="email"
@@ -19,7 +19,7 @@ function LoginForm(props){
                     required
                         />
             </FormControl>
-            <FormControl variant="outlined" fullwidth className="form-input">
+            <FormControl variant="outlined"  className="form-input">
                 <InputLabel htmlFor="password">Contraseña</InputLabel>
                 <OutlinedInput 
                     id="password"

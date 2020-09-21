@@ -20,7 +20,7 @@ class App extends Component {
                   <SemesterContainer />
             )} /> */}
             <Route exact path="/home" component={Home} />
-            <Route exact path="/subject/:subjectID" component={Subject} />
+            <Route exact path="/subject/:scheduledSubjectID" component={Subject} />
           </Switch>
       </BrowserRouter>
     );

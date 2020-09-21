@@ -7,7 +7,8 @@ import {isEmpty} from '../util/validators';
 import {
     Tabs,
     Tab,
-    Box
+    Box,
+    makeStyles
 } from '@material-ui/core';
 
 import HomeLayout from '../components/layauts/HomeLayout';
@@ -28,8 +29,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -41,16 +42,60 @@ function TabPanel(props) {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
+        display: 'flex',
+    },
+    tabs: {
+        borderRight: `1px solid ${theme.palette.divider}`
+    }
+}));
+
+function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
+
+function VerticalTabs(props) {
+    const classes = useStyles();
+
+    return (
+        <div className="subjectTabs">
+            <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={props.value}
+                indicatorColor="primary"
+                onChange={props.onChange}
+                aria-label="options"
+                className={classes.tabs}
+            >
+                <Tab label="Información" {...a11yProps(0)} />
+                <Tab label="Actividades" {...a11yProps(1)} />
+                <Tab label="Calificación" {...a11yProps(2)} />
+                <Tab label="Horario" {...a11yProps(3)} />
+            </Tabs>
+            <div className="subjectTabs__options">
+                {props.children}
+            </div>
+        </div>
+    )
+}
 
 class Subject extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
+            data: {},
+            config: {},
+            modules: [],
             loading: true,
             error: null,
-            info: undefined,
-            modules: null,
             value: 0
         };
         this.handleViewChange = this.handleViewChange.bind(this);
@@ -65,80 +110,52 @@ class Subject extends React.Component {
             return;
         }
 
-        const {subjectID} = this.props.match.params;
-
-        if(!this.evalRecivedId(subjectID)) return;
-        if(!this.selectSubject(subjectID)) return;
-        if(!this.checkSubjectExistence(subjectID)) {
-            await this.preloadData(subjectID);
+        const {scheduledSubjectID} = this.props.match.params;
+        let index, subjectID;
+        if(!this.evalRecivedId(scheduledSubjectID)) return;
+        if(!([index, subjectID] = this.selectSubject(scheduledSubjectID))) return;
+        if(!(
+            "config" in this.props.subjectReducer.subjects[index] && 
+            "modules" in this.props.subjectReducer.subjects[index]
+        )){
+            await this.preloadData(subjectID, scheduledSubjectID);
         }
+
+        this.setState({
+            ...this.props.subjectReducer.subjects[index],
+            loading: false
+        });
     }
 
-    evalRecivedId(subjectID) {
-        if(!subjectID){
+    evalRecivedId(scheduledSubjectID) {
+        if(!scheduledSubjectID){
             this.setState({loading: false, error: 'No subject'});
             return false
         }
         return true
     }
 
-    selectSubject(subjectID) {
-        let info = this.props.homeReducer.subjects.find(sub => {
-            return sub.subjectID === subjectID;
+    selectSubject(scheduledSubjectID) {
+        let index = this.props.subjectReducer.subjects.findIndex(sub => {
+            return sub.scheduledSubjectID === scheduledSubjectID;
         });
 
-        if(!info) {
+        if(index < 0) {
             this.setState({loading: false, error: 'No subject'});
             return
         }
-        this.setState({info: info});
-        return info;
+        let data = [
+            index, 
+            this.props.subjectReducer.subjects[index].data.subjectID
+        ];
+        return data;
     }
 
-    checkSubjectExistence(subjectID) {
-        if(isEmpty(this.props.subjectReducer.modules)){
-            return false
-        }
-
-        let subjectModules = this.props.subjectReducer.modules[subjectID];
-        if(subjectModules) {
-            this.setState({
-                modules: subjectModules,
-                loading: false
-            });
-            return true;
-        }
-
-        return false;
-    }
-
-    async preloadData(subjectID) {
-        await this.props.getSubjectModules(subjectID);
-        this.setState({
-            loading: false,
-            modules: this.props.subjectReducer.modules[subjectID]
-        });
-    }
-
-    async handleSubjectUpdate(data) {
-        let {scheduledSubjectID} = this.state.info;
-        this.props.updateSubjectCalif(scheduledSubjectID, data.value);
-    }
-
-    async handleActivityUpdate(data) {
-        let {scheduledSubjectID} = this.state.info;
-        this.props.updateActivityCalif(
-            scheduledSubjectID,
-            data.activityID,
-            data.value
-        );
-    }
-
-    a11yProps(index) {
-        return {
-          id: `simple-tab-${index}`,
-          'aria-controls': `simple-tabpanel-${index}`,
-        };
+    async preloadData(subjectID, scheduledSubjectID) {
+        await Promise.all([
+            this.props.getSubjectModules(scheduledSubjectID, subjectID),
+            this.props.getSubjectConfig(scheduledSubjectID)
+        ]);
     }
 
     handleViewChange(event, newVal) {
@@ -147,17 +164,29 @@ class Subject extends React.Component {
         })
     }
 
+    async handleSubjectUpdate(data) {
+        let action = {
+            ...data, 
+            scheduledSubjectID: this.state.scheduledSubjectID
+        };
+        this.props.updateSubject(action);
+    }
+
+    async handleActivityUpdate(data) {
+        this.props.updateActivityState(
+            this.state.scheduledSubjectID,
+            data.activityID,
+            data.state
+        );
+    }
+
     async handlePonderationAdded(ponderation) {
         ponderation.calif = parseInt(ponderation.calif);
         ponderation.weight = parseInt(ponderation.weight);
-
-        let result = await this.props.addPonderation(
-            this.state.info.scheduledSubjectID,
+        await this.props.addPonderation(
+            this.state.scheduledSubjectID,
             ponderation
         );
-        await this.props.getSemesterElements();
-        this.selectSubject(this.state.info.subjectID);
-        return result;
     }
 
     render() {
@@ -167,37 +196,36 @@ class Subject extends React.Component {
         return (
             <HomeLayout>
                 <div className="subjectView">
-                    <SubjectHeader
-                        subject={this.state.info}
-                        onUpdate={this.handleSubjectUpdate}
-                    />
-                    <div className="">
-                        <div className="switcher">
-                            <Tabs value={this.state.value} onChange={this.handleViewChange} aria-label="simple tabs example">
-                                <Tab label="Actividades" {...this.a11yProps(0)} />
-                                <Tab label="Calificación" {...this.a11yProps(1)} />
-                                <Tab label="Horario" {...this.a11yProps(2)} />
-                            </Tabs>
-                        </div>
+                    <VerticalTabs onChange={this.handleViewChange} value={this.state.value}>         
                         <TabPanel value={this.state.value} index={0}>
-                            <Unities
-                                modules={this.state.modules}
-                                onUpdate={this.handleActivityUpdate}
+                            <SubjectHeader
+                                subject={this.state.data}
+                                onUpdate={this.handleSubjectUpdate}
+                                color={this.state.data.color}
                             />
                         </TabPanel>
-                        <TabPanel value={this.state.value} index={1}>
+                        {this.state.modules.length && (
+                            <TabPanel value={this.state.value} index={1}>
+                                <Unities
+                                    modules={this.state.modules}
+                                    progress={this.state.config.activitiesProgress}
+                                    onChecked={this.handleActivityUpdate}
+                                />
+                            </TabPanel>
+                        )}
+                        <TabPanel value={this.state.value} index={2}>
                             <SubjectCalificationForm
-                                califications={this.state.info.califications}
+                                califications={this.state.data.califications}
                                 onPonderationAdded={this.handlePonderationAdded}
                             />
                         </TabPanel>
-                        <TabPanel value={this.state.value} index={2}>
+                        <TabPanel value={this.state.value} index={3}>
                             <Schedule
-                                subject={this.state.info}
+                                subject={this.state.data}
                                 onClick={(s) => console.log(s)}
                             />
                         </TabPanel>
-                    </div>
+                    </VerticalTabs>
                 </div>
             </HomeLayout>
         )

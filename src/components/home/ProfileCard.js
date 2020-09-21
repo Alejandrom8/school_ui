@@ -1,103 +1,112 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LinearProgress } from '@material-ui/core';
+import {connect} from 'react-redux';
+
+import * as subjectActions from '../../state/actions/subjectActions';
 
 import Modal from './Modal';
 import SemesterContainer from '../containers/SemesterContainer';
 import Loading from '../Loading';
 
+import {isEmpty} from '../../util/validators';
+
 import '../styles/Profile.css';
 
-export default function ProfileCard(props) {
+class ProfileCard extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            loading: true,
+            messages: null
+        }
+        this.handleSuccess = this.handleSuccess.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.handleLoading = this.handleLoading.bind(this);
+    }
 
-    const [modalIsShowing, setModalIsShowing] = useState(false);
-    const showModal = () => setModalIsShowing(!modalIsShowing);
+    async componentDidMount() {
+        if(isEmpty(this.props.subjects)){
+            try{
+                await this.props.getSemesterSubjects(this.props.selectedSemester);
+                // await Promise.all(this.props.subjects.map(s => (
+                //     this.props.getSubjectModules(s.scheduledSubjectID)
+                // )));
+            }catch(error) {
+                console.log(error);
+            }
+        }
+    }
 
-    const [semesterFormIsLoading, setSemesterFormIsLoading] = useState(false);
-    const [messages, setMessages] = useState('');
-    const handleLoading = () => setSemesterFormIsLoading(!semesterFormIsLoading);
-    const handleSuccess = () => {
-        setMessages('Semester created with success');
-        window.Materialize.toast('Semester created with success', 4000);
-    };
-
-    const calculateGeneralCalif = () => {
-        let califSum = props.subjects.reduce((a, c) => a + parseInt(c.califications.subjectCalif), 0);
-        let numberOfSubjects = props.subjects.length;
+    calculateGeneralCalif() {
+        let califSum = this.props.subjects.reduce((a, {data: c}) => a + parseInt(c.califications.subjectCalif), 0);
+        let numberOfSubjects = this.props.subjects.length;
         let calif = califSum / numberOfSubjects;
         calif = Math.round((calif + Number.EPSILON) * 100) / 100;
         return calif;
     }
 
-    return (
-        <section className="side-section">
-            <div className="Profile">
-                <div className="Profile__title">
-                    <h4>{props.user.career}</h4>
-                    <ul className="Profile__resume">
-                        <li>semestre: {props.semester.key}</li>
-                        <li>calificación general: {calculateGeneralCalif()}</li>
-                    </ul>
+    handleSuccess() {
+        this.setState({
+            semesterFormIsLoading: false,
+            messages: 'Semester created with success'
+        });
+        window.Materialize.toast('Semester created with success', 4000);
+    }
+
+    showModal(){
+        this.setState({modalIsShowing: !this.state.modalIsShowing});
+    }
+
+    handleLoading() {
+        this.setState({semesterFormIsLoading: !this.state.semesterFormIsLoading});
+    }
+
+    render() {
+        return (
+            <section className="side-section">
+                <div className="Profile">
+                    <div className="Profile__title">
+                        <h4>{this.props.user.career}</h4>
+                        <ul className="Profile__resume">
+                            <li>semestre: {this.props.semester.key}</li>
+                            <li>calificación general: {this.calculateGeneralCalif()}</li>
+                        </ul>
+                    </div>
+                    <div className="divider"></div>
+                    <div className="Profile__progress">
+                        <h6>Progreso</h6>
+                        <br/>
+                        <LinearProgress
+                            variant="determinate"
+                            value={30}
+                            classes={{barColorPrimary: 'blue'}}
+                        />
+                    </div>
+                    <div className="divider"></div>
+                    <div className="Profile__options">
+                        <button className="btn btn-option blue" onClick={this.showModal}>Nuevo Semestre</button>
+                        <button className="btn btn-option grey">Subir Item</button>
+                    </div>
                 </div>
-                <div className="divider"></div>
-                <div className="Profile__progress">
-                    <h6>Progreso</h6>
-                    <br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={30}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={80}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={50}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={10}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br />
-                    <LinearProgress
-                        variant="determinate"
-                        value={90}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                    <LinearProgress
-                        variant="determinate"
-                        value={70}
-                        classes={{barColorPrimary: 'blue'}}
-                    /><br/>
-                </div>
-                <div className="divider"></div>
-                <div className="Profile__options">
-                    <button className="btn btn-option blue" onClick={showModal}>Nuevo Semestre</button>
-                    <button className="btn btn-option grey">Subir Item</button>
-                </div>
-            </div>
-            <Modal
-                isOpen={modalIsShowing}
-                onClose={showModal}
-                title="Nuevo Semestre"
-                style={{width: '70vw'}}>
-                <div>{messages}</div>
-                { semesterFormIsLoading ?
-                    <Loading /> :
-                    <SemesterContainer
-                        onLoading={handleLoading}
-                        onSuccess={handleSuccess}
-                    />
-                }
-            </Modal>
-        </section>
-    )
+                <Modal
+                    isOpen={this.state.modalIsShowing}
+                    onClose={this.showModal}
+                    title="Nuevo Semestre"
+                    style={{width: '70vw'}}>
+                    <div>{this.state.messages}</div>
+                    { this.state.semesterFormIsLoading ?
+                        <Loading /> :
+                        <SemesterContainer
+                            onLoading={this.handleLoading}
+                            onSuccess={this.handleSuccess}
+                        />
+                    }
+                </Modal>
+            </section>
+        )
+    }
 }
+
+const mapStateToProps = reducers => reducers.subjectReducer;
+
+export default connect(mapStateToProps, subjectActions)(ProfileCard);

@@ -6,18 +6,18 @@ import randomColor from './home/randomColor';
 
 
 function Subject(props) {
-    const [profesor, setProfesor] = useState('');
+    const [professor, setProfessor] = useState('');
     const [color, setColor] = useState(randomColor(['#194D33', '#FCB900', '#FCB900', '#00D084', '#8ED1FC', '#0693E3', '#EB144C', '#F78DA7', '#9900EF']));
     const deleteID = () => props.delete(props.subjectID);
 
-    const handleProfesor = e => {
-        setProfesor(e.target.value);
+    const handleProfessor = e => {
+        setProfessor(e.target.value);
         props.onChange({
             subjectID: props.subjectID,
             name: props.name,
             clave: props.clave,
             color: color,
-            profesorName: e.target.value
+            professorName: e.target.value
         });
     }
 
@@ -28,7 +28,7 @@ function Subject(props) {
             name: props.name,
             clave: props.clave,
             color: color,
-            profesorName: profesor
+            professorName: professor
         });
     }
 
@@ -43,8 +43,8 @@ function Subject(props) {
                 <TextField
                     id="outlined-basic"
                     label="Profesor"
-                    onChange={handleProfesor}
-                    value={profesor}
+                    onChange={handleProfessor}
+                    value={professor}
                     inputProps={{
                         className: "browser-default"
                     }}

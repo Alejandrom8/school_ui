@@ -10,7 +10,7 @@ import './styles/Login.css';
 
 class Login extends Component{
     constructor(props){
-        super(props);
+        super();
         
         this.state = {
             loading: false,
@@ -33,6 +33,7 @@ class Login extends Component{
 
     async handleSubmit(event){
         event.preventDefault();
+        console.log("Sending form");
         this.setState({loading: true});
         let {email, password} = this.state.form;
         let result = await Auth.signIn(email, password);
@@ -43,13 +44,11 @@ class Login extends Component{
         if(!res) {
             alert('There was a problem while sign in the app');
         } else if(!res.success) {
-            console.log(res.errors);
             this.setState({
                 error: res.messages || res.errors,
                 loading: false
             });
         } else {
-            localStorage.setItem('token', res.data.token);
             this.props.history.push('/home');
         }
     }
@@ -59,9 +58,9 @@ class Login extends Component{
 
         return (
             <div className="layout">
-                <div className="floating-div">
+                <div className="z-depth-5 floating-div">
                     <div className="FormContainer">
-                        <h4>Sign in</h4>
+                        <h4>Iniciar sesión</h4>
                         <br/>
                         <p>{this.state.error}</p>
                         <LoginForm 
