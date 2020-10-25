@@ -1,0 +1,22 @@
+.column__container {
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  width: 300px;
+}
+
+.column__title {
+  padding: 8px;
+}
+
+.column__taskList {
+  padding: 8px;
+}
+
+.task__container {
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: white;
+}

@@ -1,22 +1,19 @@
 #ToolsList__container{
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
 .ToolsList{
-    width:300px;
+    /* width:300px; */
     background-color:#fff;
     border-radius:15px;
-    box-shadow: 1px 1px 1px #ddd;
 }
 
 .ToolsList h5{
-    color:#333;
     font-weight: bold;
+    color: rgba(0,0,0,0.6);
+    font-size: 1.5em;
 }
 
 .closer{
@@ -37,7 +34,7 @@ button.ToolsList__button:active{
 }
 
 .ToolsList__list{
-    max-height:40vh;
+    max-height:10vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -54,4 +51,15 @@ button.ToolsList__button:active{
 
 .ToolsList__input *{
     float:left;
+}
+
+.ToolsList .btn{
+    width: 50px;
+    height: 30px;
+    margin: 0;
+    padding: 2px;
+}
+
+.ToolsList__list.collection {
+    border: 0;
 }

@@ -7,6 +7,7 @@ import * as subjectActions from '../../state/actions/subjectActions';
 import Modal from './Modal';
 import SemesterContainer from '../containers/SemesterContainer';
 import Loading from '../Loading';
+import {ToolsList} from './tools/Tools';
 
 import {isEmpty} from '../../util/validators';
 
@@ -72,21 +73,13 @@ class ProfileCard extends React.Component {
                             <li>calificación general: {this.calculateGeneralCalif()}</li>
                         </ul>
                     </div>
-                    <div className="divider"></div>
-                    <div className="Profile__progress">
-                        <h6>Progreso</h6>
-                        <br/>
-                        <LinearProgress
-                            variant="determinate"
-                            value={30}
-                            classes={{barColorPrimary: 'blue'}}
-                        />
-                    </div>
-                    <div className="divider"></div>
                     <div className="Profile__options">
                         <button className="btn btn-option blue" onClick={this.showModal}>Nuevo Semestre</button>
-                        <button className="btn btn-option grey">Subir Item</button>
+                        {/* <button className="btn btn-option grey">Subir Item</button> */}
                     </div>
+                    {/*<div>
+                        <ToolsList />
+                    </div>*/}
                 </div>
                 <Modal
                     isOpen={this.state.modalIsShowing}

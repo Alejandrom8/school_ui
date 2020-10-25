@@ -1,15 +1,17 @@
 .Profile {
     /* background:rgb(221, 221, 221, 0.8); */
     height:83vh;
-    padding: 5% 10%;
-    display:grid;
-    grid-template: 1fr 0 3fr 0 1fr / 1fr;
-    border-radius:10px;
-    border: 1px solid rgba(var(--b6a,219,219,219),1);
+    /* display:grid; */
+    /* grid-template: 1fr 0 3fr 0 1fr / 1fr; */
+    /* border-radius:10px; */
+    /* border: 1px solid rgba(var(--b6a,219,219,219),1); */
 }
 
-.Profile .divider {
-    background-color: #ccc;
+.Profile > div {
+    border-radius:10px;
+    padding: 5% 10%;
+    margin-top: 4%;
+    border: 1px solid rgba(var(--b6a,219,219,219),1);
 }
 
 .Profile__title h4 {

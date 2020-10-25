@@ -9,9 +9,9 @@ import '../../styles/ToolsList.css';
 
 import ButtonIcon from '../../images/text.svg';
 
-class ToolsList extends React.Component{
+export class ToolsList extends React.Component{
     constructor(props){
-        super(props);
+        super();
         this.state = {
             references: []
         }
@@ -29,9 +29,9 @@ class ToolsList extends React.Component{
     }
 
     async convertToAPA(){
-        let request = await Cite.async("Q87479");
+        let request = await Cite.async(this.state.references[0]);
         let output = request.format('bibliography', {
-            format: 'html',
+            format: 'txt',
             template: 'apa',
             lang: 'es-Es'
         });
@@ -39,12 +39,10 @@ class ToolsList extends React.Component{
     }
 
     render(){
-        if(!this.props.isOpen) return <></>;
-
         return (
             <div className="ToolsList">
                 <div className="closer">
-                    <h5>Referencias {this.state.references.length || ''}</h5>
+                    <h5>Referencias ({this.state.references.length})</h5>
                 </div>
                 <ul className="ToolsList__list collection">
                     {this.state.references.map((ref, index) => (
@@ -78,7 +76,7 @@ class ToolsList extends React.Component{
 
 class Tools extends React.Component{
     constructor(props){
-        super(props);
+        super();
         this.state = {windowIsOpen: false}
         this.toggleWindow = this.toggleWindow.bind(this);
     }

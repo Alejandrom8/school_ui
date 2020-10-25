@@ -1,7 +1,7 @@
 const config = {
-    port: 8080,
-    hostname: 'localhost'
+  port: 8080,
+  hostname: 'localhost'
 }
-config.url = `http://${config.hostname}:${config.port}`;
+config.url = `http://${config.hostname}:${config.port}`
 
-module.exports = config;
+module.exports = config

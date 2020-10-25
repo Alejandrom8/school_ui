@@ -18,12 +18,12 @@
 
 .Modal__window {
     background-color: #fff;
-    border-radius:10px;
-    padding:2%;
+    border-radius:3px;
+    padding:1%;
     padding-bottom:10vh;
     width:auto;
     max-width: 80%;
-    height:90vh;
+    height:80vh;
     overflow: hidden;
 }
 
@@ -61,7 +61,7 @@
     font-family: 'Lato';
     height: 67vh;
     overflow-y: scroll;
-    padding:1%;
+    padding:4%;
 }
 
 .Modal__window-container::-webkit-scrollbar {
@@ -70,5 +70,5 @@
 
 .Modal__window-container::-webkit-scrollbar-thumb {
 	background-color: #ddd;
-	border-radius: 20px;
+	border-radius: 3px;
 }
