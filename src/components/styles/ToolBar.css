@@ -1,6 +1,5 @@
 .ToolBar{
     padding:2%;
-    position:relative;
 }
 
 .ToolBar__title{
@@ -22,9 +21,11 @@
     border: 1px solid rgba(var(--b6a,219,219,219),1);
     transition: 0.3s border;
     box-shadow: 0;
-    padding:10%;
+    padding:5%;
     color:#333;
     height:200px;
+    display: inline-block;
+    width: 200px;
 }
 
 .Tool__content{

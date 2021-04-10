@@ -69,7 +69,7 @@ class Home extends Component {
           </aside>
           <section className='ScrollerSection'>
             <TodoBar
-              todo={[0, 1, 2, 3, 4, 5, 6]}
+              todo={[0, 1, 2]}
             />
             <Feed />
           </section>

@@ -1,10 +1,6 @@
 import React from 'react'
-import SwiperCore, { Pagination, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react'
 
 import '../styles/ToolBar.css'
-import 'swiper/swiper.scss'
-import 'swiper/components/pagination/pagination.scss'
 
 function Tool (props) {
   return (
@@ -17,24 +13,12 @@ function Tool (props) {
   )
 }
 
-SwiperCore.use([Pagination, A11y])
-
 export default function TodoBar (props) {
   return (
     <div className='ToolBar'>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={3}
-        pagination={{ clickable: true }}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
-        {props.todo.map(item => (
-          <SwiperSlide key={item}>
-            <Tool id={item} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {props.todo.map(item => (
+        <Tool id={item} />
+      ))}
     </div>
   )
 }
